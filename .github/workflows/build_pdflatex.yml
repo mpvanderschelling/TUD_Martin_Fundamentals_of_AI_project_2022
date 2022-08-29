@@ -10,3 +10,9 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: TUD_Undergrad_ProjectAssignment.tex
+
+      - name: Upload artifcat
+        uses: actions/upload-artifact@v2
+        with:
+          name: PDF
+          path: TUD_Undergrad_ProjectAssignment.pdf
