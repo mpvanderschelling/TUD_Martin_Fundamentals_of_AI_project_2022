@@ -11,8 +11,21 @@ jobs:
         with:
           root_file: TUD_Undergrad_ProjectAssignment.tex
 
-      - name: Upload artifcat
+      - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: PDF
           path: TUD_Undergrad_ProjectAssignment.pdf
+          
+      - name: Commit pdf changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add TUD_Undergrad_ProjectAssignment.pdf
+          git commit -m "Update PDF build" -a || true
+          # The above command will fail if no changes were present, so we ignore
+          # that.
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
