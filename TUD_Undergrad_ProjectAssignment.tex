@@ -80,7 +80,7 @@
 %------------------------------------------------------------------
 
 %\title{Improving the general optimization strategy with a data-driven framework} % Title
-\title{Learning to optimize with data-driven framework} % Title
+\title{Learning to optimize with a data-driven framework} % Title
 
 \author[1]{Martin van der Schelling (\href{mailto:m.p.vanderschelling@tudelft.nl}{m.p.vanderschelling@tudelft.nl})}
 \author[2]{Deepesh Toshniwal (\href{mailto:D.Toshniwal@tudelft.nl}{D.Toshniwal@tudelft.nl})}
@@ -90,7 +90,7 @@
 \affil[2]{Assistant Professor at Delft University of Technology, The Netherlands}
 \affil[3]{Associate Professor at Brown University, USA}
 
-\date{\textbf{Fundamentals of AI} --- \today} % use \date{} for ommitting this
+\date{\textbf{IFEEMCS520100 Fundamentals of Artificial Intelligence} --- \today} % use \date{} for ommitting this
 
 %------------------------------------------------------------------
 
@@ -146,18 +146,18 @@ Optimization is a critical part of the data-driven process.
 %During this project we focus on the optimization part of the F3DASM framework. During almost any non-polynomial time machine learning problems, you will encounter some form of an optimization case. 
 The goal is to find the best parameters for some objective defined by the objective function $f(\mathbf{x})$ that depends on an input vector $\mathbf{x} = (x_{1}, ... , x_{d})$ with $d$ variables and, in some cases, subjected to some equality or inequality constraints that define the feasible solution space $\mathcal{X}$. Each point in the solution space could, for instance, represent a micro-structure arrangement of a material.
 
-Evaluating a sample of the objective function will result in an output vector $\vec{y}$. In analogy to the micro-structure input, this can represent some mechanical properties. For this project, we only consider single-objective optimization, i.e. where $\vec{y}$ is just a scalar. Note that generally we don't know the underlying objective function. We can only get information by sampling from it.
+Evaluating a sample of the objective function will result in an output vector $\mathbf{y}$. In analogy to the micro-structure input, this can represent some mechanical properties. For this project, we only consider single-objective optimization, i.e. where $\mathbf{y}$ is just a scalar. Note that generally we don't know the underlying objective function. We can only get information by sampling from it.
 
 Trying all possibilities to find the optimum is not really feasible, as it requires a lot of (computational) resources and time. Instead, we try to iteratively improve the current solution with an optimization algorithm.
 
-For each iteration $t$, the current solution $\vec{x}_{t}$ is altered to acquire a new solution $\vec{x}_{t+1}$. Ultimately, we want to find an optimal set of values $\vec{x}^{*}$ that will minimize or maximize the objective function $f(\vec{x})$. We can express a minimization optimization problem with the following formulation:
+For each iteration $t$, the current solution $\mathbf{x}_{t}$ is altered to acquire a new solution $\mathbf{x}_{t+1}$. Ultimately, we want to find an optimal set of values $\mathbf{x}^{*}$ that will minimize or maximize the objective function $f(\mathbf{x})$. We can express a minimization optimization problem with the following formulation:
 
 \begin{equation}
-f(\vec{x}^{*}) \leq f(\vec{x}) \; \forall \; \vec{x} \in X
+f(\mathbf{x}^{*}) \leq f(\mathbf{x}) \; \forall \; \mathbf{x} \in \mathcal{X}
 \end{equation}
 
 %output
-A minimization in $f(\vec{x})$ is the same as a maximization in $-f(\vec{x})$. For the sake of consistency, we will view the optimization as a minimization problem for $f$. 
+A minimization in $f(\mathbf{x})$ is the same as a maximization in $-f(\mathbf{x})$. For the sake of consistency, we will view the optimization as a minimization problem for $f$. 
 
 \subsection*{Learning to optimize}
 
@@ -183,7 +183,7 @@ In the masters thesis of van der Schelling \cite{Schelling2021}, different possi
 
 The aim of the project is to design a general optimization strategy with machine learning that competes with the conventional hand-engineered optimizers. You will investigate how different optimization algorithms behave on different problem-specific characteristics. 
 
-You will use the F3DASM framework to set-up your search space, sampling, objective functions and optimizers. You will assess the optimizers on various benchmarks, and come up with fair performance metrics.
+You will use the \code{F3DASM} framework to set-up your search space, sampling, objective functions and optimizers. You will assess the optimizers on various benchmarks, and come up with fair performance metrics.
 
 At the end of the project you will gain:
 \begin{enumerate}
@@ -207,7 +207,7 @@ At the end of the project you will gain:
 		
 		\item Install GitHub Desktop for \href{https://desktop.github.com/}{Windows/Mac} or \href{https://linuxhint.com/install-and-use-github-desktop-on-ubuntu/}{Linux Ubuntu}.
 		
-		\item Follow the F3DASM installation instructions from the documentation found \href{https://bessagroup.github.io/F3DASM/gettingstarted.html}{here}.
+		\item Follow the \code{F3DASM} installation instructions from the documentation found \href{https://bessagroup.github.io/F3DASM/gettingstarted.html}{here}.
 		
 		\item Create a new GitHub repository; this will be the place where you store your code.
 		
