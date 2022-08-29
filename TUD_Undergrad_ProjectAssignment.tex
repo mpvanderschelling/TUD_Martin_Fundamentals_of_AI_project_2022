@@ -1,0 +1,351 @@
+\documentclass[10pt,a4paper,twoside]{article} % CHOOSE: article, report or book
+% Options that can be useful in \documentclass:
+	% FONT size [10pt (default), 11pt, 12pt]
+	% PAPER size and format [a4paper, letterpaper, etc.]
+	% PRINT size [oneside (default in article/report), twoside (default in article)]
+	% Multiple columns [onecolumn (default), twocolumn]
+	% Landscape print mode [landscape]
+	% Title page [notitlepage (default in article), titlepage (default in report/book)]
+	% Chapter opening page [openright (default in book), openany (default in report)]
+	% Draft mode [draft]
+	% Formula-specific options [fleqn and leqno] (not very common to use)
+
+%------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%------------------------------------------------------------------
+\usepackage{amsmath,amsfonts,stmaryrd,amssymb} % Math packages
+\usepackage{siunitx} % if you want to use SI units 
+\usepackage{geometry} % Required for adjusting page dimensions and margins
+\usepackage{graphicx} % enhances dealing with figures
+\usepackage{wrapfig} % allow to include figure in the middle of text
+\usepackage{tabularx} % enhances the way we deal with tables (useful sometimes)
+\usepackage{array} % more table commands (multicolumn for example)
+\usepackage{caption,subcaption} % improves captions of tables
+\usepackage{natbib} % common bibliography 
+\usepackage[parfill]{parskip} % change paragraph style to space instead of indent
+%\usepackage[framemethod=tikz]{mdframed} % include advanced boxed/framed environments
+\usepackage[ruled]{algorithm2e} % Algorithms
+%\usepackage{listings} % to include source of a code
+\usepackage{setspace}
+%\usepackage{enumerate} % Custom item numbers for enumerations
+% \usepackage{XCharter} % Use the XCharter fonts
+\usepackage{changes} % track changes in the document
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage{framed} % to create a frame around a text
+\usepackage{titling} % enhances the title of the document
+\usepackage{titlesec} % changes the way Latex deals with sections
+\usepackage[inline]{enumitem} % to enhance enumerate, itemize and description
+\usepackage[toc,page]{appendix} % enhances appendix treatment
+\usepackage{authblk} % to include author affiliations
+\usepackage{diagbox} % to create a diagonal in a cell of a table
+
+\usepackage{hyperref} % THIS SHOULD BE THE LAST USEPACKAGE
+
+%\captionsetup{justification=raggedright} % change caption justification
+
+\hypersetup{
+	colorlinks=true,       % false: boxed links; true: colored links
+	linkcolor=blue,          % color of internal links
+	citecolor=blue,        % color of links to bibliography
+	filecolor=magenta,      % color of file links
+	urlcolor=cyan           % color of external links}
+}
+
+\geometry{
+	top=2.5cm, % Top margin
+	bottom=2.5cm, % Bottom margin
+	left=2.cm, % Left margin
+	right=2.cm, % Right margin
+%	bindingoffset=1cm, % offset on even and odd pages to include in BOOKS
+%	headheight=14pt, % Header height
+%	footskip=1.5cm, % Space from the bottom margin to the baseline of the footer
+%	headsep=0.cm, % Space from the top margin to the baseline of the header
+%	showframe, % Uncomment to show how the type block is set on the page
+}
+
+\def\code#1{\texttt{#1}}
+
+\setlength{\droptitle}{-6em} % move title up (from titling usepackage)
+
+% Commands for titlesec usepackage:
+\titlespacing\section{0pt}{6pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+\graphicspath{ {./figures/} } % Folder where figures are stored
+
+%------------------------------------------------------------------
+%	Title, author and date
+%------------------------------------------------------------------
+
+%\title{Improving the general optimization strategy with a data-driven framework} % Title
+\title{Learning to optimize with data-driven framework} % Title
+
+\author[1]{Martin van der Schelling (\href{mailto:m.p.vanderschelling@tudelft.nl}{m.p.vanderschelling@tudelft.nl})}
+\author[2]{Deepesh Toshniwal (\href{mailto:D.Toshniwal@tudelft.nl}{D.Toshniwal@tudelft.nl})}
+\author[3]{Miguel A. Bessa (\href{mailto:miguel\_bessa@brown.edu}{miguel\_bessa@brown.edu})}
+
+\affil[1]{Doctoral Researcher at Delft University of Technology, The Netherlands}
+\affil[2]{Assistant Professor at Delft University of Technology, The Netherlands}
+\affil[3]{Associate Professor at Brown University, USA}
+
+\date{\textbf{Fundamentals of AI} --- \today} % use \date{} for ommitting this
+
+%------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title
+
+%------------------------------------------------------------------
+%	INTRODUCTION
+%------------------------------------------------------------------
+
+%\begin{abstract}
+% TODO : change this
+\begin{framed}
+    \textbf{Objective}: Use machine learning to choose optimizers for an unseen problem -- "learning to optimize".\\
+	\textbf{General Instructions}: Each group has to deliver \textbf{one PDF report} and a \textbf{Git repository}. The code should be easy to read, properly commented and it should be possible to replicate the results of the report.
+\end{framed}
+%\end{abstract}
+
+
+\section*{Introduction}
+
+Conventional materials design is based on experimental trial-and-error. However, just like solving an exam by trial-and-error requires many attempts, this is an impractical strategy because an overwhelming number of combinations become possible as the design space increases. One way to address this issue is to create much more data by using predictive physics-based models\footnote{Such as finite element analyses, molecular dynamics, density functional theory, etc.}, but simulating each design can be slow because these computer analysis need to be accurate. This remains true even considering the ever-increasing computational resources.
+
+What if we had a more ''intelligent'' approach to design? In the past decade, machine learning techniques have soared to prominence in many applied fields of science and engineering. These techniques are able to discover patterns in input data, reducing the design space and informing the optimization process. The new generation of data-driven material design is here where data from predictive models and experiments can be used by machine learned models to discover new things. Once a model is trained, evaluating a material property using the model is significantly faster than measuring the property in an experiment or computing it in a simulation \cite{Kadulkar2022, Guo2021}.
+
+\subsection*{F3DASM framework}
+
+The framework for data-driven design and analysis of structures and materials (\href{https://github.com/bessagroup/f3dasm/tree/versionmartin}{\code{F3DASM}}) is an attempt to develop a systematic approach of inverting the material design process \cite{Bessa2017}. The framework integrates the following fields:
+
+\begin{itemize}
+	\item Design of experiments (DoE), where input variables describing the microstructure, properties and external conditions of the system to be evaluated are sampled and where the search space is determined.
+	\item Data generation, usually by computational analysis, where a material response database is created.
+	\item Machine learning and optimization, where we either train a surrogate model to fit our experimental findings or iteratively improve the model to obtain a new design.
+\end{itemize}
+
+%In this way, we motivate the desire to improve the material design process by data acquired from computational analysis models. 
+
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[width=0.8\linewidth]{f3dasm.png}	
+%	\caption{Schematic of global framework for data-driven material systems design/modeling \cite{Bessa2017}.}
+%	\label{fig:f3dasm}
+%\end{figure}
+
+In this assignment the data generation part is very simple, as we will not be using any numerical method\footnote{You will not need to setup nor run computer simulations to create new data.}. Instead, we will focus on the optimization part of the framework.
+The package is written in Python and it is still in the early days of development. %Therefore relevant simulation software is not yet implemented. But you are given the chance to work with this piece of software early!
+
+
+\subsection*{Optimization}
+
+Optimization is a critical part of the data-driven process.
+%During this project we focus on the optimization part of the F3DASM framework. During almost any non-polynomial time machine learning problems, you will encounter some form of an optimization case. 
+The goal is to find the best parameters for some objective defined by the objective function $f(\mathbf{x})$ that depends on an input vector $\mathbf{x} = (x_{1}, ... , x_{d})$ with $d$ variables and, in some cases, subjected to some equality or inequality constraints that define the feasible solution space $\mathcal{X}$. Each point in the solution space could, for instance, represent a micro-structure arrangement of a material.
+
+Evaluating a sample of the objective function will result in an output vector $\vec{y}$. In analogy to the micro-structure input, this can represent some mechanical properties. For this project, we only consider single-objective optimization, i.e. where $\vec{y}$ is just a scalar. Note that generally we don't know the underlying objective function. We can only get information by sampling from it.
+
+Trying all possibilities to find the optimum is not really feasible, as it requires a lot of (computational) resources and time. Instead, we try to iteratively improve the current solution with an optimization algorithm.
+
+For each iteration $t$, the current solution $\vec{x}_{t}$ is altered to acquire a new solution $\vec{x}_{t+1}$. Ultimately, we want to find an optimal set of values $\vec{x}^{*}$ that will minimize or maximize the objective function $f(\vec{x})$. We can express a minimization optimization problem with the following formulation:
+
+\begin{equation}
+f(\vec{x}^{*}) \leq f(\vec{x}) \; \forall \; \vec{x} \in X
+\end{equation}
+
+%output
+A minimization in $f(\vec{x})$ is the same as a maximization in $-f(\vec{x})$. For the sake of consistency, we will view the optimization as a minimization problem for $f$. 
+
+\subsection*{Learning to optimize}
+
+When solving a new optimization problem, we do not know what is the best optimization algorithm and its parameters that would quickly get us to the optimum. Unfortunately, the "one optimizer to rule them all" does not exist. According to the famous paper of Wolpert et al. \cite{Wolpert1997}, algorithms tend to exploit certain problem-specific characteristics, and if this particular feature is not present in the optimization problem then the performance of the optimizer will be worse than random search, i.e. random sampling (random trial-and-error!).
+
+However, what if we could train a machine learning model on many different optimization problems considering many different optimizers? The machine learning algorithm would start to learn when an optimizer should be used or not. If it is trained properly, then the next time we consider a new problem this algorithm could make an informed decision on which optimizer to use at a given iteration! This is a new field of research called "learning to optimize".
+
+Adequate training so that a machine learning algorithm can "learn to optimize" is challenging because being prepared for any kind of optimization problem requires a diverse set of algorithms to mix and match and a diverse set of optimization problems to learn from.
+
+% Conventional machine learning starts with pre-determined optimization conditions, usually hand-engineered by human experts \cite{Hospedales2020}. However this has several limitations, such as poor generalization to other tasks, severe performance sensitivity and requiring expert knowledge on machine learning to implement the right model.
+
+% Meta-learning attempts to learn the optimization conditions itself on a distribution of learning tasks, adding a hierarchical layer to the optimization process \cite{Vanschoren2018}.
+
+In the masters thesis of van der Schelling \cite{Schelling2021}, different possibilities of a implementing a general optimizer that can adapt to problem-specific features of the input data have been investigated. The thesis proposed a data-driven framework for general optimization problems to adapt the algorithm during optimization. With an adaptive data-driven optimization strategy, we eliminate the need to hand-design a machine learning model. By integrating this idea into the \code{F3DASM} framework, the proposed software package does not require any machine learning architectural choices beforehand. This will increase accessibility of the framework to pure experimentalists. 
+
+%
+% Guided by the "No Free Lunch" theorem, we verified that the effectiveness over a selection of algorithms is dependent on problem specific features and convergence. This effectiveness was captured in a unique identifier metric by optimizing a generated training set of optimization problems \cite{Schelling2021}.
+
+
+\section*{Aim of the project}
+
+%The goal of the project is to investigate how different optimization algorithms behave on different types of problems, to come up with a fair performance comparison and to create a hierarchical optimizer that (hopefully) outperforms the individual optimizers on a set of problems.
+
+The aim of the project is to design a general optimization strategy with machine learning that competes with the conventional hand-engineered optimizers. You will investigate how different optimization algorithms behave on different problem-specific characteristics. 
+
+You will use the F3DASM framework to set-up your search space, sampling, objective functions and optimizers. You will assess the optimizers on various benchmarks, and come up with fair performance metrics.
+
+At the end of the project you will gain:
+\begin{enumerate}
+	\item Knowledge on different optimizers and why they do or do not work.
+	\item Understand the key challenges of selecting appropriate machine learning models for applications.
+
+\end{enumerate}
+
+\section*{Preparations}
+
+\vspace{5mm}
+ 
+
+\begin{itemize}
+\setcounter{enumi}{1}
+	\item In order to assist you effectively during the project, please \underline{install} the following:
+	
+	\begin{itemize}
+		
+		\item Create a \href{https://github.com/}{GitHub} account
+		
+		\item Install GitHub Desktop for \href{https://desktop.github.com/}{Windows/Mac} or \href{https://linuxhint.com/install-and-use-github-desktop-on-ubuntu/}{Linux Ubuntu}.
+		
+		\item Follow the F3DASM installation instructions from the documentation found \href{https://bessagroup.github.io/F3DASM/gettingstarted.html}{here}.
+		
+		\item Create a new GitHub repository; this will be the place where you store your code.
+		
+		\item Add Martin van der Schelling as a collaborator (Github username is \code{mpvanderschelling}).
+		
+	\end{itemize}
+	
+\end{itemize}
+
+
+\begin{itemize}
+	\item Please \underline{read} the following material:
+	
+	\begin{itemize}
+		
+		\item To understand the problem and ambiguity of optimization, read the literature review of this thesis \cite{Schelling2021}, which can be downloaded \href{https://repository.tudelft.nl/islandora/object/uuid\%3Ad58271d6-21bb-470c-a5ee-4584b3b8ee29?collection=education}{here}.\footnote{You can skip the part about bio-based composites, although it could help you understand the relevance of machine learning for materials design.}
+		
+		\item To understand the idea of the framework: read the original article on the F3DASM framework \cite{Bessa2017}.
+		
+		\item To see an implementation of machine learning and optimization into materials design, read the 'fragile becomes supercompressible' article \cite{Bessa2019}. You can also check out this short video about it \href{https://www.youtube.com/watch?v=cWTWHhMAu7I}{here}!
+		
+	\end{itemize}
+	
+\end{itemize}
+
+
+
+\section*{Getting started}
+
+To get familiar with the \code{F3DASM} package, try to replicate the following experiments:
+
+
+\begin{enumerate}
+	\setcounter{enumi}{0}
+	\item We start of by creating and sampling from a design space:
+
+	\begin{enumerate} [label*=\arabic*.]
+		\item Create a 2D dimensional continuous design space with a single-objective output. Set the boundaries for all of the parameters from -1.0 to 1.0.
+		
+		\item Sample 50 points from this design space with the \code{RandomUniformSampling} sampler. Plot these samples for visualization.
+		
+		\item Repeat 2. for the \code{SobolSequenceSampling} and \code{LatinHyperCubeSampling}. What is the difference?
+		
+		\item Sampling is important for initialization of optimization algorithms. Can you explain why?
+	\end{enumerate}
+\end{enumerate}
+
+\begin{enumerate}
+	\setcounter{enumi}{1}
+	\item Next we instantiate several objective functions:
+	\begin{enumerate} [label*=\arabic*.]
+		\item Choose a function that is compatible with a 2D input space from \underline{each} of the following categories found in the \href{https://bessagroup.github.io/F3DASM/capabilities/functions.html\#implemented-benchmark-functions}{objective function list} at the documentation:
+		\begin{itemize}
+			\item Convex functions
+			\item Separable function
+			\item Differentiable functions
+			\item Multimodal functions
+		\end{itemize}
+	
+	
+		\item Plot a 3D visualization of the loss-landscape. Use the same boundary values from 1.1.
+		\item Create a contour plot (a top-down view of the loss-landscapes with its contours) for each of the functions. Indicate the global minimum on the plots.
+		\item Create the same heatmap of the loss-landscape but with the sampling points from one of the samplers used in exercise 1. Tip: you may want to use the \code{plot\_data()} function!
+	
+	\end{enumerate}
+\end{enumerate}
+
+
+\begin{enumerate}
+	\setcounter{enumi}{2}
+	\item Now we are ready to optimize our objective functions:
+	\begin{enumerate} [label*=\arabic*.]
+		\item Select \underline{two} of the optimizers from the \href{https://bessagroup.github.io/F3DASM/capabilities/algorithms.html\#implemented-optimizers}{optimizer list} in the documentation and shorty explain for each of them:
+		
+		\begin{itemize}
+			\item How does the update step of the optimizer work?
+			\item What are the prerequisites of the optimizer? In other words; are there any constraints on how the optimizer can be used?
+			\item When is this optimizer effective and when is it not?
+		\end{itemize}
+	
+		Support your answers with scientific references.
+		
+		\item Create an instance for each of the optimizers picked in 3.1 with the default hyper-parameters and the data from one of the samplers. Set the seed so that the experiment can be replicated later.
+		
+		\item Run the optimization with the \code{run\_optimization()} function considering 500 iterations for each of the chosen functions. 
+		
+		\item Create a plot showing the objective function value on the vertical axes and the iteration number on the horizontal axes for each of the optimization trials.
+		
+
+		
+	\end{enumerate}
+\end{enumerate}
+
+
+\begin{enumerate}
+	\setcounter{enumi}{3}
+	\item The initial conditions of the optimization process can heavily influence the performance. Therefore it is important to redo the experiment with different initial conditions. These are called realizations.
+	
+	\begin{enumerate} [label*=\arabic*.]
+		\item Run the same optimization of 3.3 with the \code{run\_multiple\_realizations()} function for 500 iterations with 10 different realizations.
+		
+		\item Create a plot showing the \underline{mean} objective function value on the vertical axes and the iteration number on the horizontal axes for each of the different optimizer trials.
+		
+		\item Explain the results of your optimization:
+		\begin{itemize}
+			\item Which optimizer is better on each of the objective functions and why do you think this is?
+			\item Do the results comply with your findings in scientific literature?
+		
+		\end{itemize}
+	\end{enumerate}
+\end{enumerate}
+
+\begin{enumerate}
+	\setcounter{enumi}{4}
+	\item A big thing in improving the optimizer is to tune the hyper-parameters. We have been using the default settings but maybe we can do better by changing them!
+	
+	\begin{enumerate} [label*=\arabic*.]
+		\item Choose one of the objective functions of the results created in 4.2 and select the worst-performing optimizer.
+		\item Choose one of the hyper-parameters of this optimizer and explain what it controls.
+		\item Create different instances of the selected optimizer with a different value of the selected hyperparameter
+		\item Run the same optimization process as in 4.2 for the different hyperparameter settings.
+		\item Plot your results and try to improve the optimizer! 
+	\end{enumerate}
+\end{enumerate}
+
+
+\section*{Creating a performance metric}
+
+stub
+
+\section*{Create your own a smart optimization strategy}
+
+stub
+
+{\small
+	\bibliography{references}
+	\bibliographystyle{unsrt}
+}
+
+\end{document}
+
