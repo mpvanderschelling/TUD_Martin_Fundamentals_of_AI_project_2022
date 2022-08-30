@@ -25,7 +25,7 @@
 \usepackage[parfill]{parskip} % change paragraph style to space instead of indent
 %\usepackage[framemethod=tikz]{mdframed} % include advanced boxed/framed environments
 \usepackage[ruled]{algorithm2e} % Algorithms
-%\usepackage{listings} % to include source of a code
+\usepackage{listings} % to include source of a code
 \usepackage{setspace}
 %\usepackage{enumerate} % Custom item numbers for enumerations
 % \usepackage{XCharter} % Use the XCharter fonts
@@ -115,7 +115,7 @@
 
 Conventional materials design is based on experimental trial-and-error. However, just like solving an exam by trial-and-error requires many attempts, this is an impractical strategy because an overwhelming number of combinations become possible as the design space increases. One way to address this issue is to create much more data by using predictive physics-based models\footnote{Such as finite element analyses, molecular dynamics, density functional theory, etc.}, but simulating each design can be slow because these computer analysis need to be accurate. This remains true even considering the ever-increasing computational resources.
 
-What if we had a more ''intelligent'' approach to design? In the past decade, machine learning techniques have soared to prominence in many applied fields of science and engineering. These techniques are able to discover patterns in input data, reducing the design space and informing the optimization process. The new generation of data-driven material design is here where data from predictive models and experiments can be used by machine learned models to discover new things. Once a model is trained, evaluating a material property using the model is significantly faster than measuring the property in an experiment or computing it in a simulation \cite{Kadulkar2022, Guo2021}.
+What if we had a more "intelligent" approach to design? In the past decade, machine learning techniques have soared to prominence in many applied fields of science and engineering. These techniques are able to discover patterns in input data, reducing the design space and informing the optimization process. The new generation of data-driven material design is here where data from predictive models and experiments can be used by machine learned models to discover new things. Once a model is trained, evaluating a material property using the model is significantly faster than measuring the property in an experiment or computing it in a simulation \cite{Kadulkar2022, Guo2021}.
 
 \subsection*{F3DASM framework}
 
@@ -215,6 +215,8 @@ At the end of the project you will gain:
 		
 	\end{itemize}
 	
+	In the end, you should have two git repositories: one containing the code from \code{F3DASM} and a newly created one for your group.
+	
 \end{itemize}
 
 
@@ -225,20 +227,23 @@ At the end of the project you will gain:
 		
 		\item To understand the problem and ambiguity of optimization, read the literature review of this thesis \cite{Schelling2021}, which can be downloaded \href{https://repository.tudelft.nl/islandora/object/uuid\%3Ad58271d6-21bb-470c-a5ee-4584b3b8ee29?collection=education}{here}.\footnote{You can skip the part about bio-based composites, although it could help you understand the relevance of machine learning for materials design.}
 		
-		\item To understand the idea of the framework: read the original article on the F3DASM framework \cite{Bessa2017}.
+		\item Read \href{https://bair.berkeley.edu/blog/2017/09/12/learning-to-optimize-with-rl/}{this} blogpost about the famous 'learning to optimize' paper.
+		\
+		\item \textit{Optional}: To understand the idea of the framework: read the original article on the \code{F3DASM} framework \cite{Bessa2017}.
 		
-		\item To see an implementation of machine learning and optimization into materials design, read the 'fragile becomes supercompressible' article \cite{Bessa2019}. You can also check out this short video about it \href{https://www.youtube.com/watch?v=cWTWHhMAu7I}{here}!
+		\item \textit{Optional}: To see an implementation of machine learning and optimization into materials design, read the 'fragile becomes supercompressible' article \cite{Bessa2019}. You can also check out this short video about it \href{https://www.youtube.com/watch?v=cWTWHhMAu7I}{here}!
 		
 	\end{itemize}
 	
 \end{itemize}
 
+\section*{Questions to be answered}
 
+\vspace{5mm}
 
-\section*{Getting started}
+\subsection*{Getting started}
 
 To get familiar with the \code{F3DASM} package, try to replicate the following experiments:
-
 
 \begin{enumerate}
 	\setcounter{enumi}{0}
@@ -247,7 +252,7 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
 	\begin{enumerate} [label*=\arabic*.]
 		\item Create a 2D dimensional continuous design space with a single-objective output. Set the boundaries for all of the parameters from -1.0 to 1.0.
 		
-		\item Sample 50 points from this design space with the \code{RandomUniformSampling} sampler. Plot these samples for visualization.
+		\item Sample 50 points from this design space with the \code{RandomUniformSampling} sampler. Set the \code{seed} of the sampler to 42. Plot these samples for visualization.
 		
 		\item Repeat 2. for the \code{SobolSequenceSampling} and \code{LatinHyperCubeSampling}. What is the difference?
 		
@@ -259,13 +264,19 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
 	\setcounter{enumi}{1}
 	\item Next we instantiate several objective functions:
 	\begin{enumerate} [label*=\arabic*.]
-		\item Choose a function that is compatible with a 2D input space from \underline{each} of the following categories found in the \href{https://bessagroup.github.io/F3DASM/capabilities/functions.html\#implemented-benchmark-functions}{objective function list} at the documentation:
+
+
+		\item Explain the characteristics from \underline{each} of the different categories of objective functions implemented in the \code{F3DASM} framework found in the  \href{https://bessagroup.github.io/F3DASM/capabilities/functions.html\#implemented-benchmark-functions}{objective function list} at the documentation:
 		\begin{itemize}
 			\item Convex functions
-			\item Separable function
+			\item Separable functions
 			\item Differentiable functions
 			\item Multimodal functions
 		\end{itemize}
+	
+	    \item Create 2D instances of the \code{DixonPrice}, \code{Ackley}, \code{StyblinskiTank} and \code{Branin} function. Make sure the \code{seed} is set to 42.
+	
+
 	
 	
 		\item Plot a 3D visualization of the loss-landscape. Use the same boundary values from 1.1.
@@ -280,7 +291,7 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
 	\setcounter{enumi}{2}
 	\item Now we are ready to optimize our objective functions:
 	\begin{enumerate} [label*=\arabic*.]
-		\item Select \underline{two} of the optimizers from the \href{https://bessagroup.github.io/F3DASM/capabilities/algorithms.html\#implemented-optimizers}{optimizer list} in the documentation and shorty explain for each of them:
+		\item Create the \code{Adam}, \code{CMAES} and \code{PSO} optimizers from the \href{https://bessagroup.github.io/F3DASM/capabilities/algorithms.html\#implemented-optimizers}{optimizer list} in the documentation and shorty explain for each of them:
 		
 		\begin{itemize}
 			\item How does the update step of the optimizer work?
@@ -290,7 +301,7 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
 	
 		Support your answers with scientific references.
 		
-		\item Create an instance for each of the optimizers picked in 3.1 with the default hyper-parameters and the data from one of the samplers. Set the seed so that the experiment can be replicated later.
+		\item Create an instance for each of the optimizers with the default hyper-parameters, the data from one of the samplers and \code{seed} set to 42.
 		
 		\item Run the optimization with the \code{run\_optimization()} function considering 500 iterations for each of the chosen functions. 
 		
@@ -301,6 +312,7 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
 	\end{enumerate}
 \end{enumerate}
 
+\subsection*{Multiple realizations}
 
 \begin{enumerate}
 	\setcounter{enumi}{3}
@@ -320,6 +332,8 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
 	\end{enumerate}
 \end{enumerate}
 
+\subsection*{Hyper-parameters}
+
 \begin{enumerate}
 	\setcounter{enumi}{4}
 	\item A big thing in improving the optimizer is to tune the hyper-parameters. We have been using the default settings but maybe we can do better by changing them!
@@ -327,24 +341,71 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
 	\begin{enumerate} [label*=\arabic*.]
 		\item Choose one of the objective functions of the results created in 4.2 and select the worst-performing optimizer.
 		\item Choose one of the hyper-parameters of this optimizer and explain what it controls.
-		\item Create different instances of the selected optimizer with a different value of the selected hyperparameter
+		\item Create different instances of the selected optimizer with a different value of the selected hyper-parameter
 		\item Run the same optimization process as in 4.2 for the different hyperparameter settings.
 		\item Plot your results and try to improve the optimizer! 
 	\end{enumerate}
 \end{enumerate}
 
 
-\section*{Creating a performance metric}
+\subsection*{Creating a performance metric}
 
-stub
+\begin{enumerate}
+    \setcounter{enumi}{5}
+    \item Comparing the performance of two different optimizers on a single instance of a benchmark function is relatively straightforward (we can i.e. compare the $y^*$-values). However, we are interested in the overall performance on many different optimization problems. This might cause some problems, since the absolute value of the global minimum might differ.
+    
+    \begin{enumerate} [label*=\arabic*.]
+        \item Create a diverse set of 100 optimization problems from the benchmark problems found in the \code{F3DASM} library. Explain why you think that this set represents many different problem-specific characteristics \footnote{Hint: you might consider problems of different dimensionality.}.
+        
+        \item Select 5 different optimizers from the \code{F3DASM} library and use the default hyperparameters. Optimize each problem from the set in 6.1 for each optimizer for 500 iterations and 10 realizations and store this data \footnote{It might be useful to use the \href{https://docs.python.org/3/library/json.html}{json-library} for writing Python-objects to disc. }.
+        
+        \item Compare the performances of the 5 chosen optimizers on the entire set of optimization problems and \underline{justify} the metric used. You can use a metric from a scientific paper or design your own.
+        
+    \end{enumerate}
+    
+\end{enumerate}
 
-\section*{Create your own a smart optimization strategy}
+\subsection*{Create your own a smart optimization strategy}
 
-stub
+\begin{enumerate}
+    \setcounter{enumi}{6}
+    \item Now it is your turn to design a meta-optimizer! 
+    
+
+    
+    \begin{enumerate} [label*=\arabic*.]
+        \item Create a new optimizer by inheriting from the \code{Optimizer} base-class\footnote{Learn how to do that \href{https://bessagroup.github.io/F3DASM/capabilities/algorithms.html\#implement-your-own-optimizer}{here}!}. 
+        
+        \begin{itemize}
+            \item You can use the 5 different update steps or a combination of them from the optimizers chosen in 6.2.
+            \item You can only use the information gained by sampling the optimization problem to make an informative decision. For instance, using the name or \code{global\_optimum} attribute of the benchmark problem to train your meta-optimizer is not allowed.
+        \end{itemize}
+        
+        \item Split the 100 optimization problems from 6.1 into a training set of 80 and a test set of 20 problems \footnote{Bonus: Use \href{https://machinelearningmastery.com/k-fold-cross-validation/}{k-fold cross validation} to account for a bias in the training/testing set.}.
+        
+        \item Train your optimizer on the training set and measure the performance on the test set. Compare the performance with the individual 5 optimizers chosen in 6.2.
+        
+        \item Reflect on the performance of your optimizer. When is it effective and when not? How does the performance change with a different training set?
+        
+    \end{enumerate}
+    
+\end{enumerate}
+
+\section*{Report}
+
+Each group has to deliver \textbf{one PDF report} and a \textbf{Git repository}. 
+
+\begin{itemize}
+    \item Use Jupyter notebooks for the Python code. If you are using external libraries, mention them and the used version in the Jupyter notebook.
+    
+    \item The code should be easy to read, properly commented and it should be possible to replicate the results of the report.
+    
+\end{itemize}
+
 
 {\small
 	\bibliography{references}
-	\bibliographystyle{unsrt}
+	\bibliographystyle{ieeetr}
 }
 
 \end{document}
