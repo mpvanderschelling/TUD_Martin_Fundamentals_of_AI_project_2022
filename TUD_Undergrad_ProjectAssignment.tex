@@ -80,7 +80,7 @@
 %------------------------------------------------------------------
 
 %\title{Improving the general optimization strategy with a data-driven framework} % Title
-\title{Learning to optimize with a data-driven framework} % Title
+\title{Improving the general optimization strategy with a data-driven framework} % Title
 
 \author[1]{Martin van der Schelling (\href{mailto:m.p.vanderschelling@tudelft.nl}{m.p.vanderschelling@tudelft.nl})}
 \author[2]{Deepesh Toshniwal (\href{mailto:D.Toshniwal@tudelft.nl}{D.Toshniwal@tudelft.nl})}
@@ -90,7 +90,7 @@
 \affil[2]{Assistant Professor at Delft University of Technology, The Netherlands}
 \affil[3]{Associate Professor at Brown University, USA}
 
-\date{\textbf{IFEEMCS520100 Fundamentals of Artificial Intelligence} --- \today} % use \date{} for ommitting this
+\date{\textbf{TI3150TU Capstone Applied AI project} --- \today} % use \date{} for ommitting this
 
 %------------------------------------------------------------------
 
@@ -237,11 +237,13 @@ At the end of the project you will gain:
 	
 \end{itemize}
 
-\section*{Questions to be answered}
+\section*{Getting started}
+
+We will have a practical session explaining the functionalities of the \code{f3dasm} framework. During this session, you will be asked to do little coding exercises to get familiar with the code structure. You can find the Jupyter Notebook and further instructions \href{https://github.com/mpvanderschelling/F3DASM_practical}{here}.
 
 \vspace{5mm}
 
-\subsection*{Getting started}
+\section*{Questions to be answered}
 
 To get familiar with the \code{F3DASM} package, try to replicate the following experiments:
 
@@ -252,9 +254,9 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
 	\begin{enumerate} [label*=\arabic*.]
 		\item Create a 2D dimensional continuous design space with a single-objective output. Set the boundaries for all of the parameters from -1.0 to 1.0.
 		
-		\item Sample 50 points from this design space with the \code{RandomUniformSampling} sampler. Set the \code{seed} of the sampler to 42. Plot these samples for visualization.
+		\item Sample 50 points from this design space with the \code{RandomUniform} sampler. Set the \code{seed} of the sampler to 42. Plot these samples for visualization.
 		
-		\item Repeat 2. for the \code{SobolSequenceSampling} and \code{LatinHyperCubeSampling}. What is the difference?
+		\item Repeat 2. for the \code{SobolSequence} and \code{LatinHyperCube} samplers. What is the difference?
 		
 		\item Sampling is important for initialization of optimization algorithms. Can you explain why?
 	\end{enumerate}
@@ -276,10 +278,7 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
 	
 	    \item Create 2D instances of the \code{DixonPrice}, \code{Ackley}, \code{StyblinskiTank} and \code{Branin} function. Make sure the \code{seed} is set to 42.
 	
-
-	
-	
-		\item Plot a 3D visualization of the loss-landscape. Use the same boundary values from 1.1.
+		\item Plot 3D visualizations of the loss-landscape. Use the boundary values from 1.1.
 		\item Create a contour plot (a top-down view of the loss-landscapes with its contours) for each of the functions. Indicate the global minimum on the plots.
 		\item Create the same heatmap of the loss-landscape but with the sampling points from one of the samplers used in exercise 1. Tip: you may want to use the \code{plot\_data()} function!
 	
@@ -357,7 +356,7 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
     \begin{enumerate} [label*=\arabic*.]
         \item Create a diverse set of 100 optimization problems from the benchmark problems found in the \code{F3DASM} library. Explain why you think that this set represents many different problem-specific characteristics \footnote{Hint: you might consider problems of different dimensionality.}.
         
-        \item Select 5 different optimizers from the \code{F3DASM} library and use the default hyperparameters. Optimize each problem from the set in 6.1 for each optimizer for 500 iterations and 10 realizations and store this data \footnote{It might be useful to use the \href{https://docs.python.org/3/library/json.html}{json-library} for writing Python-objects to disc. }.
+        \item Select 5 different optimizers from the \code{F3DASM} library and use the default hyperparameters. Optimize each problem from the set in 6.1 for each optimizer for 500 iterations and 10 realizations and store this data \footnote{It might be useful to use the \href{https://docs.python.org/3/library/json.html}{json-library} for writing Python-objects to disc. Take a look at the \code{f3dasm.write\_pickle} function.}.
         
         \item Compare the performances of the 5 chosen optimizers on the entire set of optimization problems and \underline{justify} the metric used. You can use a metric from a scientific paper or design your own.
         
@@ -396,7 +395,7 @@ To get familiar with the \code{F3DASM} package, try to replicate the following e
 Each group has to deliver \textbf{one PDF report} and a \textbf{Git repository}. 
 
 \begin{itemize}
-    \item Use Jupyter notebooks for the Python code. If you are using external libraries, mention them and the used version in the Jupyter notebook.
+    \item You can use Jupyter notebooks for the Python code. If you are using external libraries, mention them and the used version in the Jupyter notebook.
     
     \item The code should be easy to read, properly commented and it should be possible to replicate the results of the report.
     
